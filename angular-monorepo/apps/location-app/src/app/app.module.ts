@@ -8,11 +8,13 @@ import { PanelMenuModule } from 'primeng/panelmenu';
 import { BadgeModule } from 'primeng/badge';
 import { AvatarGroupModule } from 'primeng/avatargroup';
 import { EntitiesFeatureHomepageModule } from '@angular-monorepo/entities/feature-homepage';
+import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 
 @NgModule({
   declarations: [AppComponent],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     AvatarModule,
     PanelMenuModule,
     BadgeModule,
