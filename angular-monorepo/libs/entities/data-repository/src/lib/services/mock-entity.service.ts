@@ -1,5 +1,14 @@
 import { Injectable } from '@angular/core';
-import { Employee, EntityDetails, EntityListItem, EntityType, EntityUpdateDto, GetEntityListParams, LocationStats } from "../model/model";
+import {
+  Employee,
+  EmployeeVisits,
+  EntityDetails,
+  EntityListItem,
+  EntityType,
+  EntityUpdateDto,
+  GetEntityListParams,
+  LocationStats
+} from "../model/model";
 import { Observable, of } from 'rxjs';
 
 @Injectable()
@@ -97,42 +106,71 @@ export class MockEntityService {
         {id: 'id1', name: 'Jacob Holland'},
     ];
 
-    getEntityList(getEntityListParams: GetEntityListParams): Observable<EntityListItem[]> {
-        return of([]);
-    }
+  getEntityList(getEntityListParams: GetEntityListParams): Observable<EntityListItem[]> {
+    return of(
+      this.entities.filter(entity => this.searchEntityMatchConditions(getEntityListParams, entity))
+        .map(entity => {
+          return {
+            entityId: entity.entityId,
+            trackingId: entity.trackingId,
+            name: entity.name,
+            entityType: entity.entityType,
+            entityStatus: entity.entityStatus,
+            isActive: entity.isActive
+          }
+        })
+    );
+  }
 
-    getEntityDetails(entityId: string): Observable<EntityDetails> {
-        return of({
-            entityId: '',
-            trackingId: '',
-            name: '',
-            entityType: '',
-            entityStatus: '',
-            isActive: false,
-            attributes: [],
-        });
+  searchEntityMatchConditions(getEntityListParams: GetEntityListParams, entity: EntityDetails): boolean | undefined{
+    if (getEntityListParams.search) {
+      return (entity.name.includes(getEntityListParams.search) || entity.trackingId?.includes(getEntityListParams.search));
     }
+    return true;
+  }
 
-    updateEntity(entityUpdateDto: EntityUpdateDto, entityId: string): Observable<EntityDetails> {
-        return of({
-            entityId: '',
-            trackingId: '',
-            name: '',
-            entityType: '',
-            entityStatus: '',
-            isActive: false,
-            attributes: [],
-        });
+  getEntityDetails(entityId: string): Observable<EntityDetails> {
+    const result = this.entities.find(entity => entity.entityId === entityId);
+    if (!result) {
+      throw new Error('Entity not found');
+    } else {
+      return of(result);
     }
+  }
 
-    getEntityTypes(): Observable<EntityType[]> {
-        return of([]);
+  updateEntity(entityUpdateDto: EntityUpdateDto, entityId: string): Observable<EntityDetails> {
+    const result = this.entities.find(entity => entity.entityId === entityId);
+    if (!result) {
+      throw new Error('Entity not found');
+    } else {
+      result.trackingId = entityUpdateDto.trackingId;
+      result.entityType = entityUpdateDto.entityType;
+      result.name = entityUpdateDto.name;
+      return of(result);
     }
+  }
 
-    getLocationStats(): Observable<LocationStats> {
-        return of({
-            lastWeekLocationOccupancy: [],
-            lastWeekEmployeesVisits: [],
-        });
+  getEntityTypes(): Observable<EntityType[]> {
+    return of(this.entityTypes);
+  }
+
+  getLocationStats(): Observable<LocationStats> {
+    const countMap: Map<Employee, number> = new Map;
+    this.lastWeekVisitsLog.forEach(employee => {
+      const currentCount = countMap.get(employee);
+      if (currentCount) {
+        countMap.set(employee, currentCount + 1);
+      } else {
+        countMap.set(employee, 1);
+      }
+    });
+    const employeesVisits: EmployeeVisits[] = [];
+    for (const entry of countMap.entries()) {
+      employeesVisits.push({name: entry[0].name, visits: entry[1]});
     }
+    return of({
+      lastWeekLocationOccupancy: this.lastWeekLocationOccupancy,
+      lastWeekEmployeesVisits: employeesVisits,
+    });
+  }
 }

@@ -1,8 +1,21 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { EntityListItem, EntityService } from "@angular-monorepo/entities/data-repository";
 
 @Component({
   selector: 'angular-monorepo-entities-feature-list',
   templateUrl: './entities-feature-list.component.html',
   styleUrls: ['./entities-feature-list.component.scss'],
 })
-export class EntitiesFeatureListComponent {}
+export class EntitiesFeatureListComponent  implements OnInit {
+
+  entityList: EntityListItem[] = [];
+
+  constructor(private entityService: EntityService) {}
+
+  ngOnInit() {
+    this.entityService.getEntityList({}).subscribe((entityList) => {
+      this.entityList = entityList;
+      console.log(this.entityList);
+    });
+  }
+}
