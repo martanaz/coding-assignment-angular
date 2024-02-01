@@ -9,6 +9,8 @@ import { BadgeModule } from 'primeng/badge';
 import { AvatarGroupModule } from 'primeng/avatargroup';
 import { EntitiesFeatureHomepageModule } from '@angular-monorepo/entities/feature-homepage';
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
+import { EntityService } from "@angular-monorepo/entities/data-repository";
+import { MockEntityService } from "@angular-monorepo/entities/data-repository";
 
 @NgModule({
   declarations: [AppComponent],
@@ -22,7 +24,7 @@ import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
     EntitiesFeatureHomepageModule,
     RouterModule.forRoot(appRoutes, { initialNavigation: 'enabledBlocking' }),
   ],
-  providers: [],
+  providers: [{provide: EntityService, useClass: MockEntityService}],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
