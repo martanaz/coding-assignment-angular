@@ -155,19 +155,19 @@ export class MockEntityService {
   }
 
   getLocationStats(): Observable<LocationStats> {
-    const countMap: Map<Employee, number> = new Map;
+    const countMap: Map<string, number> = new Map;
     this.lastWeekVisitsLog.forEach(employee => {
-      const currentCount = countMap.get(employee);
+      const currentCount = countMap.get(employee.name);
       if (currentCount) {
-        countMap.set(employee, currentCount + 1);
+        countMap.set(employee.name, currentCount + 1);
       } else {
-        countMap.set(employee, 1);
+        countMap.set(employee.name, 1);
       }
     });
     const employeesVisits: EmployeeVisits[] = [];
     for (const entry of countMap.entries()) {
-      employeesVisits.push({name: entry[0].name, visits: entry[1]});
-    }
+      employeesVisits.push({name: entry[0], visits: entry[1]});
+    } // todo: include only top 5
     return of({
       lastWeekLocationOccupancy: this.lastWeekLocationOccupancy,
       lastWeekEmployeesVisits: employeesVisits,
