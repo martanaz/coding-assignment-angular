@@ -155,6 +155,8 @@ export class MockEntityService {
   }
 
   getLocationStats(): Observable<LocationStats> {
+
+    // Get number of visits per employee
     const countMap: Map<string, number> = new Map;
     this.lastWeekVisitsLog.forEach(employee => {
       const currentCount = countMap.get(employee.name);
@@ -164,10 +166,18 @@ export class MockEntityService {
         countMap.set(employee.name, 1);
       }
     });
-    const employeesVisits: EmployeeVisits[] = [];
+
+    // Store the values in array
+    let employeesVisits: EmployeeVisits[] = [];
     for (const entry of countMap.entries()) {
       employeesVisits.push({name: entry[0], visits: entry[1]});
-    } // todo: include only top 5
+    }
+
+    // Take only top 5 results
+    employeesVisits = employeesVisits
+      .sort((visit, nextVisit) => nextVisit.visits - visit.visits)
+      .slice(0, 5);
+
     return of({
       lastWeekLocationOccupancy: this.lastWeekLocationOccupancy,
       lastWeekEmployeesVisits: employeesVisits,
