@@ -1,1 +1,6 @@
-<p>entities-feature-location-dashboard works!</p>
+<highcharts-chart
+  *ngIf="isHighcharts"
+  [Highcharts]="Highcharts"
+  [options]="occupancyChartOptions"
+  class="dashboard-chart"
+></highcharts-chart>

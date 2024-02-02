@@ -122,7 +122,7 @@ export class MockEntityService {
     );
   }
 
-  searchEntityMatchConditions(getEntityListParams: GetEntityListParams, entity: EntityDetails): boolean | undefined{
+  private searchEntityMatchConditions(getEntityListParams: GetEntityListParams, entity: EntityDetails): boolean | undefined{
     if (getEntityListParams.search) {
       return (entity.name.includes(getEntityListParams.search) || entity.trackingId?.includes(getEntityListParams.search));
     }
