@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {EmployeeVisits, EntityService, LocationStats} from "@angular-monorepo/entities/data-repository";
+import { EmployeeVisits, EntityService, LocationStats } from "@angular-monorepo/entities/data-repository";
 import * as Highcharts from 'highcharts';
 
 @Component({
@@ -29,7 +29,15 @@ export class EntitiesFeatureLocationDashboardComponent implements OnInit {
           text: 'Last week location occupancy'
         },
         xAxis: {
-          categories: ['Seven days ago', 'Six days ago', 'Five days ago', 'Four days ago', 'Three days ago', 'Two days ago', 'One day ago']
+          categories: [
+            'Seven days ago',
+            'Six days ago',
+            'Five days ago',
+            'Four days ago',
+            'Three days ago',
+            'Two days ago',
+            'One day ago'
+          ]
         },
         yAxis: {
           title: {
