@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { EntityService, LocationStats } from "@angular-monorepo/entities/data-repository";
+import {EmployeeVisits, EntityService, LocationStats} from "@angular-monorepo/entities/data-repository";
 import * as Highcharts from 'highcharts';
 
 @Component({
@@ -44,6 +44,39 @@ export class EntitiesFeatureLocationDashboardComponent implements OnInit {
           }
         ]
       };
+
+      this.employeesVisitsChartOptions = {
+        title: {
+          text: 'Top five visits by employee last week'
+        },
+        xAxis: {
+          labels: {
+            enabled: false
+          }
+        },
+        yAxis: {
+          title: {
+            text: 'Number of visits by employee'
+          }
+        },
+        series: [
+          {
+            data: this.getDataForEmployeesChart(this.locationStats.lastWeekEmployeesVisits),
+            type: 'column',
+            name: 'Number of visits by employee',
+          }
+        ],
+      };
     });
+  }
+
+  private getDataForEmployeesChart(data: EmployeeVisits[]) {
+    const result: (string | number)[][] = [];
+
+    data.forEach((employeeVisit) => {
+      result.push([employeeVisit.name, employeeVisit.visits]);
+    });
+
+    return result;
   }
 }
