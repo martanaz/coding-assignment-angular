@@ -16,17 +16,23 @@ export class EntitiesFeatureListComponent  implements OnInit {
     'Is Active',
   ];
   selectedTableHeaders: string[] = this.tableHeaderList;
+  chosenEntityId = '';
+  dialogVisible = false;
 
   constructor(private entityService: EntityService) {}
 
   ngOnInit() {
     this.entityService.getEntityList({}).subscribe((entityList) => {
       this.entityList = entityList;
-      console.log(this.entityList);
     });
   }
 
   hasHeaderSelected(header: string){
     return !!this.selectedTableHeaders.find(value => value === header);
+  }
+
+  showDialog(entityId: string) {
+    this.chosenEntityId = entityId;
+    this.dialogVisible = true;
   }
 }

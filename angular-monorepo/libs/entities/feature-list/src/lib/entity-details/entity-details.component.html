@@ -1,0 +1,34 @@
+<div [formGroup]="form" class="flex justify-content-center entity-form">
+  <div class="grid-view">
+    <span class="p-float-label">
+      <input pInputText id="entityId" [formControlName]="'entityId'" class="input-control"/>
+      <label for="entityId">Entity ID</label>
+    </span>
+    <span class="p-float-label">
+      <input pInputText id="trackingId" [formControlName]="'trackingId'" class="input-control"/>
+      <label for="trackingId">Tracking ID</label>
+    </span>
+    <span class="p-float-label">
+      <input pInputText id="name" [formControlName]="'name'" class="input-control"/>
+      <label for="name">Name</label>
+    </span>
+    <span class="p-float-label">
+      <input pInputText id="entityType" [formControlName]="'entityType'" class="input-control"/>
+      <label for="entityType">Entity Type</label>
+    </span>
+    <span class="p-float-label">
+      <input pInputText id="entityStatus" [formControlName]="'entityStatus'" class="input-control"/>
+      <label for="entityStatus">Entity Status</label>
+    </span>
+    <span class="p-float-label">
+      <input pInputText id="isActive" [formControlName]="'isActive'" class="input-control"/>
+      <label for="isActive">Is Active</label>
+    </span>
+  </div>
+  <div class="attributes-box">
+    <span>
+      <label for="attributes">Attributes</label>
+      <p-chips id="attributes" [formControlName]="'attributes'" class="input-control"></p-chips>
+    </span>
+  </div>
+</div>

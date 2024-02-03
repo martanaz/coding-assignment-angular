@@ -2,7 +2,7 @@
   <ng-template pTemplate="caption">
     <div class="flex">
       <span class="p-float-label">
-        <p-multiSelect [options]="tableHeaderList" [(ngModel)]="selectedTableHeaders" inputId="table-header-select"></p-multiSelect>
+        <p-multiSelect [options]="tableHeaderList" [(ngModel)]="selectedTableHeaders" id="table-header-select"></p-multiSelect>
         <label for="table-header-select">Select Headers</label>
       </span>
     </div>
@@ -19,10 +19,14 @@
   <ng-template pTemplate="body" let-entity>
     <tr>
       <td *ngIf="hasHeaderSelected('Tracking id')">{{entity.trackingId}}</td>
-      <td *ngIf="hasHeaderSelected('Name')">{{entity.name}}</td>
+      <td *ngIf="hasHeaderSelected('Name')" (click)="showDialog(entity.entityId)" class="name-column">{{entity.name}}</td>
       <td *ngIf="hasHeaderSelected('Entity Type')">{{entity.entityType}}</td>
       <td *ngIf="hasHeaderSelected('Entity Status')">{{entity.entityStatus}}</td>
       <td *ngIf="hasHeaderSelected('Is Active')">{{entity.isActive}}</td>
     </tr>
   </ng-template>
 </p-table>
+
+<p-dialog header="Header" [style]="{width: '50vw'}" [visible]="dialogVisible" [modal]="true" [breakpoints]="{ '960px': '75vw', '400px': '95vw' }">
+  <angular-monorepo-entity-details [entityId]="chosenEntityId" *ngIf="dialogVisible"></angular-monorepo-entity-details>
+</p-dialog>
