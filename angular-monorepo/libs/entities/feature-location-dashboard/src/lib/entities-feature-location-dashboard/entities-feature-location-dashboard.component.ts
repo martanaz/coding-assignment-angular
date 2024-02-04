@@ -18,9 +18,12 @@ export class EntitiesFeatureLocationDashboardComponent implements OnInit {
   occupancyChartOptions: Highcharts.Options = {};
   employeesVisitsChartOptions: Highcharts.Options = {};
 
+  loading = false;
+
   constructor(private entityService: EntityService) {}
 
   ngOnInit() {
+    this.loading = true;
     this.entityService.getLocationStats().subscribe((locationStats) => {
       this.locationStats = locationStats;
 
@@ -75,6 +78,7 @@ export class EntitiesFeatureLocationDashboardComponent implements OnInit {
           }
         ],
       };
+      this.loading = false;
     });
   }
 

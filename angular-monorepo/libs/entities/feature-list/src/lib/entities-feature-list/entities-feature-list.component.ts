@@ -18,12 +18,15 @@ export class EntitiesFeatureListComponent  implements OnInit {
   selectedTableHeaders: string[] = this.tableHeaderList;
   chosenEntityId = '';
   dialogVisible = false;
+  loading = false;
 
   constructor(private entityService: EntityService) {}
 
   ngOnInit() {
+    this.loading = true;
     this.entityService.getEntityList({}).subscribe((entityList) => {
       this.entityList = entityList;
+      this.loading = false;
     });
   }
 
@@ -34,5 +37,18 @@ export class EntitiesFeatureListComponent  implements OnInit {
   showDialog(entityId: string) {
     this.chosenEntityId = entityId;
     this.dialogVisible = true;
+  }
+
+  closeDialog(hasDataChanged: boolean) {
+
+    this.dialogVisible = false;
+
+    if (hasDataChanged) {
+      this.loading = true;
+      this.entityService.getEntityList({}).subscribe((entityList) => {
+        this.entityList = entityList;
+        this.loading = false;
+      });
+    }
   }
 }

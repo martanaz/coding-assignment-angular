@@ -9,7 +9,7 @@ import {
   GetEntityListParams,
   LocationStats
 } from "../model/model";
-import { Observable, of } from 'rxjs';
+import { delay, Observable, of } from 'rxjs';
 
 @Injectable()
 export class MockEntityService {
@@ -119,7 +119,7 @@ export class MockEntityService {
             isActive: entity.isActive
           }
         })
-    );
+    ).pipe(delay(1000));
   }
 
   private searchEntityMatchConditions(getEntityListParams: GetEntityListParams, entity: EntityDetails): boolean | undefined{
@@ -134,7 +134,7 @@ export class MockEntityService {
     if (!result) {
       throw new Error('Entity not found');
     } else {
-      return of(result);
+      return of(result).pipe(delay(1000));
     }
   }
 
@@ -146,12 +146,12 @@ export class MockEntityService {
       result.trackingId = entityUpdateDto.trackingId;
       result.entityType = entityUpdateDto.entityType;
       result.name = entityUpdateDto.name;
-      return of(result);
+      return of(result).pipe(delay(1000));
     }
   }
 
   getEntityTypes(): Observable<EntityType[]> {
-    return of(this.entityTypes);
+    return of(this.entityTypes).pipe(delay(1000));
   }
 
   getLocationStats(): Observable<LocationStats> {
@@ -181,6 +181,6 @@ export class MockEntityService {
     return of({
       lastWeekLocationOccupancy: this.lastWeekLocationOccupancy,
       lastWeekEmployeesVisits: employeesVisits,
-    });
+    }).pipe(delay(1000));
   }
 }

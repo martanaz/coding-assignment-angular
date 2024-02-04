@@ -1,4 +1,4 @@
-<p-table [value]="entityList"  styleClass="p-datatable-striped">
+<p-table [value]="entityList"  styleClass="p-datatable-striped" *ngIf="!loading; else spinner">
   <ng-template pTemplate="caption">
     <div class="flex">
       <span class="p-float-label">
@@ -27,6 +27,10 @@
   </ng-template>
 </p-table>
 
-<p-dialog header="Header" [style]="{width: '50vw'}" [visible]="dialogVisible" [modal]="true" [breakpoints]="{ '960px': '75vw', '400px': '95vw' }">
-  <angular-monorepo-entity-details [entityId]="chosenEntityId" *ngIf="dialogVisible"></angular-monorepo-entity-details>
+<ng-template #spinner class="spinner">
+  <p-progressSpinner></p-progressSpinner>
+</ng-template>
+
+<p-dialog header="Entity Details" [style]="{width: '50vw'}" [visible]="dialogVisible" [modal]="true" [breakpoints]="{ '960px': '75vw', '400px': '95vw' }" [closable]="false">
+  <angular-monorepo-entity-details [entityId]="chosenEntityId" (closeDialog)="closeDialog($event)" *ngIf="dialogVisible"></angular-monorepo-entity-details>
 </p-dialog>

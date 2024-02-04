@@ -10,6 +10,10 @@ import { OverlayPanelModule } from "primeng/overlaypanel";
 import { DialogModule } from "primeng/dialog";
 import { InputTextModule } from "primeng/inputtext";
 import { ChipsModule } from "primeng/chips";
+import { ButtonModule } from "primeng/button";
+import { AutoFocusModule } from "primeng/autofocus";
+import { CheckboxModule } from "primeng/checkbox";
+import { ProgressSpinnerModule } from "primeng/progressspinner";
 
 const routes: Routes = [{ path: '', component: EntitiesFeatureListComponent }];
 
@@ -24,7 +28,11 @@ const routes: Routes = [{ path: '', component: EntitiesFeatureListComponent }];
     DialogModule,
     ReactiveFormsModule,
     InputTextModule,
-    ChipsModule
+    ChipsModule,
+    ButtonModule,
+    AutoFocusModule,
+    CheckboxModule,
+    ProgressSpinnerModule
   ],
   declarations: [EntitiesFeatureListComponent, EntityDetailsComponent],
 })

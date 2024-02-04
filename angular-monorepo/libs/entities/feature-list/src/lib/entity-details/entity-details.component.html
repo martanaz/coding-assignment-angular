@@ -1,4 +1,4 @@
-<div [formGroup]="form" class="flex justify-content-center entity-form">
+<div [formGroup]="form" class="flex justify-content-center entity-form" *ngIf="!loading; else spinner">
   <div class="grid-view">
     <span class="p-float-label">
       <input pInputText id="entityId" [formControlName]="'entityId'" class="input-control"/>
@@ -20,8 +20,8 @@
       <input pInputText id="entityStatus" [formControlName]="'entityStatus'" class="input-control"/>
       <label for="entityStatus">Entity Status</label>
     </span>
-    <span class="p-float-label">
-      <input pInputText id="isActive" [formControlName]="'isActive'" class="input-control"/>
+    <span>
+      <p-checkbox [formControlName]="'isActive'" [binary]="true" id="isActive"></p-checkbox>
       <label for="isActive">Is Active</label>
     </span>
   </div>
@@ -31,4 +31,18 @@
       <p-chips id="attributes" [formControlName]="'attributes'" class="input-control"></p-chips>
     </span>
   </div>
+  <div class="button-row">
+    <div *ngIf="isBeingEdited; else buttonsDefault">
+      <p-button icon="pi pi-times" (click)="onCancel()" label="Cancel"></p-button>
+      <p-button icon="pi pi-check" (click)="onSubmit()" label="Save"></p-button>
+    </div>
+    <ng-template #buttonsDefault >
+      <p-button (click)="onEdit()" label="Edit"></p-button>
+      <p-button (click)="onClose()" label="Close"></p-button>
+    </ng-template>
+  </div>
 </div>
+
+<ng-template #spinner>
+  <p-progressSpinner></p-progressSpinner>
+</ng-template>
