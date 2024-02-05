@@ -22,7 +22,9 @@
       <td *ngIf="hasHeaderSelected('Name')" (click)="showDialog(entity.entityId)" class="name-column">{{entity.name}}</td>
       <td *ngIf="hasHeaderSelected('Entity Type')">{{entity.entityType}}</td>
       <td *ngIf="hasHeaderSelected('Entity Status')">{{entity.entityStatus}}</td>
-      <td *ngIf="hasHeaderSelected('Is Active')">{{entity.isActive | entityActive}}</td>
+      <td *ngIf="hasHeaderSelected('Is Active')">
+        {{entity.isActive | entityActive}} <i class="pi pi-exclamation-triangle red" *ngIf="!entity.isActive"></i>
+      </td>
     </tr>
   </ng-template>
 </p-table>
