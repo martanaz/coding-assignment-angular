@@ -7,14 +7,17 @@
     <span class="p-float-label">
       <input pInputText id="trackingId" [formControlName]="'trackingId'" class="input-control"/>
       <label for="trackingId">Tracking ID</label>
+      <div class="error-area" *ngIf="form.invalid && form.errors">
+        <p>Name and Tracking ID fields need to have different values</p>
+      </div>
     </span>
     <span class="p-float-label">
       <input pInputText id="name" [formControlName]="'name'" class="input-control"/>
       <label for="name">Name</label>
       <div class="error-area" *ngIf="form.get('name')?.invalid && (form.get('name')?.dirty || form.get('name')?.touched)">
-        <div *ngIf="form.get('name')?.errors?.['required']">Field is required</div>
-        <div *ngIf="form.get('name')?.errors?.['nameDifferentFromTrackingIdValidator']">Value has to be different than Tracking Id</div>
-        <div *ngIf="form.get('name')?.errors?.['nameNotUnique']">Name is already taken</div>
+        <div *ngIf="form.get('name')?.errors?.['required']"><p>Field is required</p></div>
+        <div *ngIf="form.get('name')?.errors?.['nameDifferentFromTrackingIdValidator']"><p>Value has to be different than Tracking Id</p></div>
+        <div *ngIf="form.get('name')?.errors?.['nameNotUnique']"><p>Name is already taken</p></div>
       </div>
     </span>
     <span class="p-float-label">
@@ -34,9 +37,6 @@
       <label for="attributes">Attributes</label>
       <p-chips id="attributes" [formControlName]="'attributes'" class="input-control"></p-chips>
     </span>
-  </div>
-  <div class="error-area form-error-area" *ngIf="form.invalid && form.errors">
-    Name and Tracking ID fields need to have different values
   </div>
   <div class="button-row">
     <div *ngIf="isBeingEdited; else buttonsDefault">

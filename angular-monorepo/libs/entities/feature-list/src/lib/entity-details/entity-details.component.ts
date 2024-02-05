@@ -29,7 +29,6 @@ export class EntityDetailsComponent implements OnInit {
   initialValues: EntityDetails | null = null;
 
   isBeingEdited = false;
-  hasBeenEdited = false;
 
   constructor(private entityService: EntityService, private formBuilder: FormBuilder, private messageService: MessageService) {}
 

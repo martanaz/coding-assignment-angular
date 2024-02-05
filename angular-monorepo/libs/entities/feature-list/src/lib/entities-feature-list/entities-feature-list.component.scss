@@ -1,3 +1,9 @@
 .name-column {
   cursor: pointer;
 }
+
+.entity-list-table {
+  p-multiSelect .p-input-wrapper {
+    max-width: 200px;
+  }
+}

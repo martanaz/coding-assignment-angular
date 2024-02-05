@@ -1,8 +1,8 @@
-<p-table [value]="entityList"  styleClass="p-datatable-striped" *ngIf="!loading; else spinner">
-  <ng-template pTemplate="caption">
+<p-table [value]="entityList"  styleClass="p-datatable-striped entity-list-table" *ngIf="!loading; else spinner">
+  <ng-template pTemplate="caption" class="table-headers">
     <div class="flex">
       <span class="p-float-label">
-        <p-multiSelect [options]="tableHeaderList" [(ngModel)]="selectedTableHeaders" id="table-header-select"></p-multiSelect>
+        <p-multiSelect [filter]="false" [options]="tableHeaderList" [(ngModel)]="selectedTableHeaders" id="table-header-select"></p-multiSelect>
         <label for="table-header-select">Select Headers</label>
       </span>
     </div>
@@ -22,7 +22,7 @@
       <td *ngIf="hasHeaderSelected('Name')" (click)="showDialog(entity.entityId)" class="name-column">{{entity.name}}</td>
       <td *ngIf="hasHeaderSelected('Entity Type')">{{entity.entityType}}</td>
       <td *ngIf="hasHeaderSelected('Entity Status')">{{entity.entityStatus}}</td>
-      <td *ngIf="hasHeaderSelected('Is Active')">{{entity.isActive}}</td>
+      <td *ngIf="hasHeaderSelected('Is Active')">{{entity.isActive | entityActive}}</td>
     </tr>
   </ng-template>
 </p-table>
