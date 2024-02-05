@@ -1,0 +1,38 @@
+<p-table [value]="entityList"  styleClass="p-datatable-striped entity-list-table" *ngIf="!loading; else spinner">
+  <ng-template pTemplate="caption" class="table-headers">
+    <div class="flex">
+      <span class="p-float-label">
+        <p-multiSelect [filter]="false" [options]="tableHeaderList" [(ngModel)]="selectedTableHeaders" id="table-header-select"></p-multiSelect>
+        <label for="table-header-select">Select Headers</label>
+      </span>
+    </div>
+  </ng-template>
+  <ng-template pTemplate="header">
+    <tr>
+      <th *ngIf="hasHeaderSelected('Tracking id')">Tracking id</th>
+      <th *ngIf="hasHeaderSelected('Name')">Name</th>
+      <th *ngIf="hasHeaderSelected('Entity Type')">Entity Type</th>
+      <th *ngIf="hasHeaderSelected('Entity Status')">Entity Status</th>
+      <th *ngIf="hasHeaderSelected('Is Active')">Is Active</th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-entity>
+    <tr>
+      <td *ngIf="hasHeaderSelected('Tracking id')">{{entity.trackingId}}</td>
+      <td *ngIf="hasHeaderSelected('Name')" (click)="showDialog(entity.entityId)" class="name-column">{{entity.name}}</td>
+      <td *ngIf="hasHeaderSelected('Entity Type')">{{entity.entityType}}</td>
+      <td *ngIf="hasHeaderSelected('Entity Status')">{{entity.entityStatus}}</td>
+      <td *ngIf="hasHeaderSelected('Is Active')">
+        {{entity.isActive | entityActive}} <i class="pi pi-exclamation-triangle red" *ngIf="!entity.isActive"></i>
+      </td>
+    </tr>
+  </ng-template>
+</p-table>
+
+<ng-template #spinner class="spinner">
+  <p-progressSpinner></p-progressSpinner>
+</ng-template>
+
+<p-dialog header="Entity Details" [style]="{width: '50vw'}" [visible]="dialogVisible" [modal]="true" [breakpoints]="{ '960px': '75vw', '400px': '95vw' }" [closable]="false">
+  <angular-monorepo-entity-details [entityId]="chosenEntityId" (closeDialog)="closeDialog($event)" *ngIf="dialogVisible"></angular-monorepo-entity-details>
+</p-dialog>

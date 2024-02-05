@@ -1,0 +1,58 @@
+<div [formGroup]="form" class="flex justify-content-center entity-form" *ngIf="!loading; else spinner">
+  <div class="grid-view">
+    <span class="p-float-label">
+      <input pInputText id="entityId" [formControlName]="'entityId'" class="input-control"/>
+      <label for="entityId">Entity ID</label>
+    </span>
+    <span class="p-float-label">
+      <input pInputText id="trackingId" [formControlName]="'trackingId'" class="input-control"/>
+      <label for="trackingId">Tracking ID</label>
+      <div class="error-area" *ngIf="form.invalid && form.errors">
+        <p>Name and Tracking ID fields need to have different values</p>
+      </div>
+    </span>
+    <span class="p-float-label">
+      <input pInputText id="name" [formControlName]="'name'" class="input-control"/>
+      <label for="name">Name</label>
+      <div class="error-area" *ngIf="form.get('name')?.invalid && (form.get('name')?.dirty || form.get('name')?.touched)">
+        <div *ngIf="form.get('name')?.errors?.['required']"><p>Field is required</p></div>
+        <div *ngIf="form.get('name')?.errors?.['nameDifferentFromTrackingIdValidator']"><p>Value has to be different than Tracking Id</p></div>
+        <div *ngIf="form.get('name')?.errors?.['nameNotUnique']"><p>Name is already taken</p></div>
+      </div>
+    </span>
+    <span class="p-float-label">
+      <input pInputText id="entityType" [formControlName]="'entityType'" class="input-control"/>
+      <label for="entityType">Entity Type</label>
+    </span>
+    <span class="p-float-label">
+      <input pInputText id="entityStatus" [formControlName]="'entityStatus'" class="input-control"/>
+      <label for="entityStatus">Entity Status</label>
+    </span>
+    <div class="checkbox-container">
+      <p-checkbox [formControlName]="'isActive'" [binary]="true" id="isActive" [label]="'Is Active'"></p-checkbox>
+    </div>
+  </div>
+  <div class="attributes-box">
+    <span>
+      <label for="attributes">Attributes</label>
+      <p-chips id="attributes" [formControlName]="'attributes'" class="input-control"></p-chips>
+    </span>
+  </div>
+  <div class="button-row">
+    <div *ngIf="isBeingEdited; else buttonsDefault">
+      <p-button (click)="onCancel()" label="Cancel"></p-button>
+      <p-button (click)="onSubmit()" label="Save" [disabled]="!form.valid" *ngIf="!nameValidationLoading; else saveSpinner"></p-button>
+      <ng-template #saveSpinner>
+        <p-progressSpinner></p-progressSpinner>
+      </ng-template>
+    </div>
+    <ng-template #buttonsDefault >
+      <p-button (click)="onEdit()" label="Edit"></p-button>
+      <p-button (click)="onClose()" label="Close"></p-button>
+    </ng-template>
+  </div>
+</div>
+
+<ng-template #spinner>
+  <p-progressSpinner></p-progressSpinner>
+</ng-template>

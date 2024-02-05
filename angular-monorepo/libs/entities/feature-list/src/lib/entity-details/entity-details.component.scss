@@ -1,0 +1,48 @@
+.entity-form {
+  margin-top: 1.5rem;
+
+  .grid-view {
+    display: grid;
+    grid-template-columns: auto auto auto;
+    row-gap: 2rem;
+    column-gap: 10px;
+
+    .input-control {
+      width: 100%;
+    }
+  }
+
+  .attributes-box {
+    margin-top: 1rem;
+
+    label {
+      font-size: 12px;
+      padding-left: 12px;
+    }
+  }
+
+  p-checkbox {
+
+    margin-top: 0.7rem;
+
+    p-checkbox-box {
+      margin-right: 5px;
+    }
+  }
+
+  .error-area {
+    color: red;
+    font-size: 11px;
+  }
+
+  .button-row {
+    float: right;
+    margin-top: 12px;
+
+    p-button {
+      margin-left: 5px;
+      min-width: 125px;
+    }
+
+  }
+}

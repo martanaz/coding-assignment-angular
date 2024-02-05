@@ -8,19 +8,26 @@ import { PanelMenuModule } from 'primeng/panelmenu';
 import { BadgeModule } from 'primeng/badge';
 import { AvatarGroupModule } from 'primeng/avatargroup';
 import { EntitiesFeatureHomepageModule } from '@angular-monorepo/entities/feature-homepage';
+import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
+import { EntityService } from "@angular-monorepo/entities/data-repository";
+import { MockEntityService } from "@angular-monorepo/entities/data-repository";
+import { MessagesModule } from "primeng/messages";
+import { MessageService } from "primeng/api";
 
 @NgModule({
   declarations: [AppComponent],
-  imports: [
-    BrowserModule,
-    AvatarModule,
-    PanelMenuModule,
-    BadgeModule,
-    AvatarGroupModule,
-    EntitiesFeatureHomepageModule,
-    RouterModule.forRoot(appRoutes, { initialNavigation: 'enabledBlocking' }),
-  ],
-  providers: [],
+    imports: [
+        BrowserModule,
+        BrowserAnimationsModule,
+        AvatarModule,
+        PanelMenuModule,
+        BadgeModule,
+        AvatarGroupModule,
+        EntitiesFeatureHomepageModule,
+        RouterModule.forRoot(appRoutes, {initialNavigation: 'enabledBlocking'}),
+        MessagesModule,
+    ],
+  providers: [{provide: EntityService, useClass: MockEntityService}, MessageService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

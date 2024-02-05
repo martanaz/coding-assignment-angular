@@ -1,0 +1,18 @@
+<div *ngIf="!loading; else spinner">
+  <highcharts-chart
+    *ngIf="isHighcharts"
+    [Highcharts]="Highcharts"
+    [options]="occupancyChartOptions"
+    class="dashboard-chart"
+  ></highcharts-chart>
+  <highcharts-chart
+    *ngIf="isHighcharts"
+    [Highcharts]="Highcharts"
+    [options]="employeesVisitsChartOptions"
+    class="dashboard-chart"
+  ></highcharts-chart>
+</div>
+
+<ng-template #spinner>
+  <p-progressSpinner></p-progressSpinner>
+</ng-template>

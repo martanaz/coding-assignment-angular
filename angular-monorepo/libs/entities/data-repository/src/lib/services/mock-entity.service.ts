@@ -1,6 +1,15 @@
 import { Injectable } from '@angular/core';
-import { Employee, EntityDetails, EntityListItem, EntityType, EntityUpdateDto, GetEntityListParams, LocationStats } from "../model/model";
-import { Observable, of } from 'rxjs';
+import {
+  Employee,
+  EmployeeVisits,
+  EntityDetails,
+  EntityListItem,
+  EntityType,
+  EntityUpdateDto,
+  GetEntityListParams,
+  LocationStats
+} from "../model/model";
+import { delay, Observable, of } from 'rxjs';
 
 @Injectable()
 export class MockEntityService {
@@ -97,42 +106,83 @@ export class MockEntityService {
         {id: 'id1', name: 'Jacob Holland'},
     ];
 
-    getEntityList(getEntityListParams: GetEntityListParams): Observable<EntityListItem[]> {
-        return of([]);
+  getEntityList(getEntityListParams: GetEntityListParams): Observable<EntityListItem[]> {
+    return of(
+      this.entities.filter(entity => this.searchEntityMatchConditions(getEntityListParams, entity))
+        .map(entity => {
+          return {
+            entityId: entity.entityId,
+            trackingId: entity.trackingId,
+            name: entity.name,
+            entityType: entity.entityType,
+            entityStatus: entity.entityStatus,
+            isActive: entity.isActive
+          }
+        })
+    ).pipe(delay(1000));
+  }
+
+  private searchEntityMatchConditions(getEntityListParams: GetEntityListParams, entity: EntityDetails): boolean | undefined{
+    if (getEntityListParams.search) {
+      return (entity.name.includes(getEntityListParams.search) || entity.trackingId?.includes(getEntityListParams.search));
+    } else if (getEntityListParams.name) {
+      return entity.name === getEntityListParams.name;
+    }
+    return true;
+  }
+
+  getEntityDetails(entityId: string): Observable<EntityDetails> {
+    const result = this.entities.find(entity => entity.entityId === entityId);
+    if (!result) {
+      throw new Error('Entity not found');
+    } else {
+      return of(result).pipe(delay(1000));
+    }
+  }
+
+  updateEntity(entityUpdateDto: EntityUpdateDto, entityId: string): Observable<EntityDetails> {
+    const result = this.entities.find(entity => entity.entityId === entityId);
+    if (!result) {
+      throw new Error('Entity not found');
+    } else {
+      result.trackingId = entityUpdateDto.trackingId;
+      result.entityType = entityUpdateDto.entityType;
+      result.name = entityUpdateDto.name;
+      return of(result).pipe(delay(1000));
+    }
+  }
+
+  getEntityTypes(): Observable<EntityType[]> {
+    return of(this.entityTypes).pipe(delay(1000));
+  }
+
+  getLocationStats(): Observable<LocationStats> {
+
+    // Get number of visits per employee
+    const countMap: Map<string, number> = new Map;
+    this.lastWeekVisitsLog.forEach(employee => {
+      const currentCount = countMap.get(employee.name);
+      if (currentCount) {
+        countMap.set(employee.name, currentCount + 1);
+      } else {
+        countMap.set(employee.name, 1);
+      }
+    });
+
+    // Store the values in array
+    let employeesVisits: EmployeeVisits[] = [];
+    for (const entry of countMap.entries()) {
+      employeesVisits.push({name: entry[0], visits: entry[1]});
     }
 
-    getEntityDetails(entityId: string): Observable<EntityDetails> {
-        return of({
-            entityId: '',
-            trackingId: '',
-            name: '',
-            entityType: '',
-            entityStatus: '',
-            isActive: false,
-            attributes: [],
-        });
-    }
+    // Take only top 5 results
+    employeesVisits = employeesVisits
+      .sort((visit, nextVisit) => nextVisit.visits - visit.visits)
+      .slice(0, 5);
 
-    updateEntity(entityUpdateDto: EntityUpdateDto, entityId: string): Observable<EntityDetails> {
-        return of({
-            entityId: '',
-            trackingId: '',
-            name: '',
-            entityType: '',
-            entityStatus: '',
-            isActive: false,
-            attributes: [],
-        });
-    }
-
-    getEntityTypes(): Observable<EntityType[]> {
-        return of([]);
-    }
-
-    getLocationStats(): Observable<LocationStats> {
-        return of({
-            lastWeekLocationOccupancy: [],
-            lastWeekEmployeesVisits: [],
-        });
-    }
+    return of({
+      lastWeekLocationOccupancy: this.lastWeekLocationOccupancy,
+      lastWeekEmployeesVisits: employeesVisits,
+    }).pipe(delay(1000));
+  }
 }
