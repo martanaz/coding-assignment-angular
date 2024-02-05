@@ -11,20 +11,23 @@ import { EntitiesFeatureHomepageModule } from '@angular-monorepo/entities/featur
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { EntityService } from "@angular-monorepo/entities/data-repository";
 import { MockEntityService } from "@angular-monorepo/entities/data-repository";
+import { MessagesModule } from "primeng/messages";
+import { MessageService } from "primeng/api";
 
 @NgModule({
   declarations: [AppComponent],
-  imports: [
-    BrowserModule,
-    BrowserAnimationsModule,
-    AvatarModule,
-    PanelMenuModule,
-    BadgeModule,
-    AvatarGroupModule,
-    EntitiesFeatureHomepageModule,
-    RouterModule.forRoot(appRoutes, { initialNavigation: 'enabledBlocking' }),
-  ],
-  providers: [{provide: EntityService, useClass: MockEntityService}],
+    imports: [
+        BrowserModule,
+        BrowserAnimationsModule,
+        AvatarModule,
+        PanelMenuModule,
+        BadgeModule,
+        AvatarGroupModule,
+        EntitiesFeatureHomepageModule,
+        RouterModule.forRoot(appRoutes, {initialNavigation: 'enabledBlocking'}),
+        MessagesModule,
+    ],
+  providers: [{provide: EntityService, useClass: MockEntityService}, MessageService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

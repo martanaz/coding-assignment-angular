@@ -125,6 +125,8 @@ export class MockEntityService {
   private searchEntityMatchConditions(getEntityListParams: GetEntityListParams, entity: EntityDetails): boolean | undefined{
     if (getEntityListParams.search) {
       return (entity.name.includes(getEntityListParams.search) || entity.trackingId?.includes(getEntityListParams.search));
+    } else if (getEntityListParams.name) {
+      return entity.name === getEntityListParams.name;
     }
     return true;
   }

@@ -32,7 +32,7 @@ const routes: Routes = [{ path: '', component: EntitiesFeatureListComponent }];
     ButtonModule,
     AutoFocusModule,
     CheckboxModule,
-    ProgressSpinnerModule
+    ProgressSpinnerModule,
   ],
   declarations: [EntitiesFeatureListComponent, EntityDetailsComponent],
 })

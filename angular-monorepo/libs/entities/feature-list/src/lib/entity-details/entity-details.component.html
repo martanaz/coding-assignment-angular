@@ -11,6 +11,11 @@
     <span class="p-float-label">
       <input pInputText id="name" [formControlName]="'name'" class="input-control"/>
       <label for="name">Name</label>
+      <div class="error-area" *ngIf="form.get('name')?.invalid && (form.get('name')?.dirty || form.get('name')?.touched)">
+        <div *ngIf="form.get('name')?.errors?.['required']">Field is required</div>
+        <div *ngIf="form.get('name')?.errors?.['nameDifferentFromTrackingIdValidator']">Value has to be different than Tracking Id</div>
+        <div *ngIf="form.get('name')?.errors?.['nameNotUnique']">Name is already taken</div>
+      </div>
     </span>
     <span class="p-float-label">
       <input pInputText id="entityType" [formControlName]="'entityType'" class="input-control"/>
@@ -20,10 +25,9 @@
       <input pInputText id="entityStatus" [formControlName]="'entityStatus'" class="input-control"/>
       <label for="entityStatus">Entity Status</label>
     </span>
-    <span>
-      <p-checkbox [formControlName]="'isActive'" [binary]="true" id="isActive"></p-checkbox>
-      <label for="isActive">Is Active</label>
-    </span>
+    <div class="checkbox-container">
+      <p-checkbox [formControlName]="'isActive'" [binary]="true" id="isActive" [label]="'Is Active'"></p-checkbox>
+    </div>
   </div>
   <div class="attributes-box">
     <span>
@@ -31,10 +35,16 @@
       <p-chips id="attributes" [formControlName]="'attributes'" class="input-control"></p-chips>
     </span>
   </div>
+  <div class="error-area form-error-area" *ngIf="form.invalid && form.errors">
+    Name and Tracking ID fields need to have different values
+  </div>
   <div class="button-row">
     <div *ngIf="isBeingEdited; else buttonsDefault">
-      <p-button icon="pi pi-times" (click)="onCancel()" label="Cancel"></p-button>
-      <p-button icon="pi pi-check" (click)="onSubmit()" label="Save"></p-button>
+      <p-button (click)="onCancel()" label="Cancel"></p-button>
+      <p-button (click)="onSubmit()" label="Save" [disabled]="!form.valid" *ngIf="!nameValidationLoading; else saveSpinner"></p-button>
+      <ng-template #saveSpinner>
+        <p-progressSpinner></p-progressSpinner>
+      </ng-template>
     </div>
     <ng-template #buttonsDefault >
       <p-button (click)="onEdit()" label="Edit"></p-button>
